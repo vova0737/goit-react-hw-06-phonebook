@@ -1,0 +1,21 @@
+.section {
+  text-align: center;
+  background-color: rgb(222, 241, 223);
+}
+
+.section:first-child {
+  margin-bottom: 25px;
+}
+
+.title {
+  margin: 0;
+  margin-bottom: 20px;
+  padding: 8px;
+
+  font-family: Roboto, sans-serif;
+  font-weight: 700;
+  font-size: 30px;
+  color: rgb(10, 51, 26);
+  background-color: rgb(180, 201, 179);
+}
+
