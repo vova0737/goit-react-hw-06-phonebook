@@ -1,76 +1,108 @@
 import React, { Component } from 'react';
+import { connect } from 'react-redux';
+import phoneBookActions from '../../redux/phonebook/phonebook-actions';
 import PropTypes from 'prop-types';
 import styles from './ContactForm.module.css';
 
-const INITIAL_STATE = {
-  name: '',
-  number: '',
-};
-
 class ContactForm extends Component {
-  state = INITIAL_STATE;
+  state = {
+    name: '',
+    number: '',
+    message: null,
+  };
 
-  handleSubmitForm = event => {
-    event.preventDefault();
+  static propTypes = {
+    contacts: PropTypes.arrayOf(PropTypes.object),
+    onSubmit: PropTypes.func,
+  };
 
+  setMessage = note => {
+    this.setState({ message: note });
+    setTimeout(() => {
+      this.setState({ message: null });
+    }, 2500);
+  };
+
+  handleSubmit = e => {
     const { name, number } = this.state;
-    const formRefs = event.currentTarget;
-    const trim = name.trim() === '' || number.trim() === '';
+    e.preventDefault();
 
-    function clearFields() {
-      formRefs[formRefs.length - 1].blur();
+    if (name === '') {
+      this.setMessage('Enter contact name, please!');
+      return;
     }
-
-    if (trim) {
-      alert('Some field is empty');
-      clearFields();
+    if (number === '') {
+      this.setMessage('Enter contact phone, please!');
+      return;
+    }
+    if (
+      this.props.contacts.find(
+        item => item.name.toLowerCase() === name.toLowerCase(),
+      )
+    ) {
+      this.setMessage('Contact already exists!');
       return;
     }
 
-    this.props.onSubmit(name.trim(), number.trim());
-    this.setState(INITIAL_STATE);
-    clearFields();
+    this.props.onSubmit(name, number);
+    this.setState({
+      name: '',
+      number: '',
+    });
   };
 
-  handleChange = ({ currentTarget }) => {
-    this.setState({ [currentTarget.name]: currentTarget.value });
+  handleChange = e => {
+    const { name, value } = e.target;
+    this.setState({
+      [name]: value,
+    });
   };
 
   render() {
-    const { name, number } = this.state;
+    const { name, number, message } = this.state;
 
     return (
-      <form className={styles.form} onSubmit={this.handleSubmitForm}>
-        <label>
-          <input
-            className={styles.input}
-            type="text"
-            value={name}
-            name="name"
-            placeholder="Name"
-            onChange={this.handleChange}
-          />
-        </label>
-        <label>
-          <input
-            className={styles.input}
-            type="tel"
-            value={number}
-            name="number"
-            placeholder="Phone"
-            onChange={this.handleChange}
-          />
-          <button className={styles.btn} type="submit">
-            Add contact
-          </button>
-        </label>
-      </form>
+      message && alert(message),
+      (
+        <div className={styles.container}>
+          <form className={styles.form} onSubmit={this.handleSubmit}>
+            <label>
+              <input
+                className={styles.input}
+                type="text"
+                value={name}
+                name="name"
+                placeholder="Name"
+                onChange={this.handleChange}
+              />
+            </label>
+            <label>
+              <input
+                className={styles.input}
+                type="tel"
+                value={number}
+                name="number"
+                placeholder="Phone"
+                onChange={this.handleChange}
+              />
+            </label>
+            <button className={styles.btn} type="submit">
+              Add contact
+            </button>
+          </form>
+        </div>
+      )
     );
   }
 }
 
-ContactForm.propTypes = {
-  onSubmit: PropTypes.func.isRequired,
-};
+const mapStateToProps = state => ({
+  contacts: state.phoneBook.contacts,
+});
 
-export default ContactForm;
+const mapDispatchToProps = dispatch => ({
+  onSubmit: (name, number) =>
+    dispatch(phoneBookActions.addContact(name, number)),
+});
+
+export default connect(mapStateToProps, mapDispatchToProps)(ContactForm);

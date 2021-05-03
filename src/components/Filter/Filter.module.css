@@ -1,6 +1,10 @@
 .form {
-  margin-left: 100px;
-  margin-right: 100px;
+  margin-top: 15px;
+  margin-bottom: 15px;
+  box-shadow: 0 3px 6px rgba(0, 0, 0, 0.16), 0 3px 6px rgba(0, 0, 0, 0.23);
+  padding: 10px 75px;
+  text-align: center;
+  background-color: rgb(222, 241, 223);
 }
 
 .title {
@@ -17,4 +21,3 @@
   border: 1px solid rgb(180, 201, 179);
   border-radius: 5px;
 }
-

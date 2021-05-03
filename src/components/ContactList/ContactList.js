@@ -1,40 +1,51 @@
 import React from 'react';
 import PropTypes from 'prop-types';
-import Contact from '../Contact/Contact';
+import { connect } from 'react-redux';
 import styles from './ContactList.module.css';
+import phoneBookActions from '../../redux/phonebook/phonebook-actions';
 
-function ContactList({ contacts, deleteHandler }) {
+const ContactList = ({ contacts, onDelete, clearFilter }) => {
   return (
     <ul className={styles.list}>
-      {contacts.map(({ id, name, number }) =>
-        Contact({
-          id,
-          name,
-          number,
-          deleteHandler,
-        }),
-      )}
+      {contacts.map(({ id, name, number }) => (
+        <li className={styles.contact}>
+          <span className={styles.name}>{name}</span>
+          <span className={styles.number}>{number}</span>
+          <button
+            className={styles.btn}
+            onClick={() => {
+              onDelete(id, clearFilter());
+            }}
+            aria-label="Удалить контакт"
+          >
+            Delete
+          </button>
+        </li>
+      ))}
     </ul>
   );
-}
-
-ContactList.defaultProps = {
-  contacts: PropTypes.arrayOf(
-    PropTypes.exact({
-      name: 'Name',
-      number: '+380',
-    }),
-  ),
 };
 
 ContactList.propTypes = {
-  contacts: PropTypes.arrayOf(
-    PropTypes.exact({
-      id: PropTypes.string.isRequired,
-      name: PropTypes.string,
-      number: PropTypes.string,
-    }),
-  ),
+  onDelete: PropTypes.func,
+  contacts: PropTypes.arrayOf(PropTypes.object),
 };
 
-export default ContactList;
+const getFilteredContactsList = (allContacts, filter) => {
+  const normalizedFilter = filter.toLowerCase();
+
+  return allContacts.filter(({ name }) =>
+    name.toLowerCase().includes(normalizedFilter),
+  );
+};
+
+const mapStateToProps = ({ phoneBook: { contacts, filter } }) => ({
+  contacts: getFilteredContactsList(contacts, filter),
+});
+
+const mapDispatchToProps = dispatch => ({
+  onDelete: id => dispatch(phoneBookActions.deleteContact(id)),
+  clearFilter: () => dispatch(phoneBookActions.changeFilter('')),
+});
+
+export default connect(mapStateToProps, mapDispatchToProps)(ContactList);

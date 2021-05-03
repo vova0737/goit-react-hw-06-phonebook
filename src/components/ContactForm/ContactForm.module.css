@@ -1,10 +1,12 @@
 .form {
-  margin-bottom: 15px;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
   padding: 10px;
 }
 
 .input {
-  margin-right: 10px;
+  margin: 5px;
   padding: 5px;
   font-family: Roboto, sans-serif;
   font-size: 16px;
@@ -15,6 +17,7 @@
 
 .btn {
   padding: 5px;
+  margin-top: 20px;
   font-family: Roboto, sans-serif;
   font-size: 14px;
   /* border: none; */
@@ -28,4 +31,10 @@
 .btn:hover,
 .btn:focus {
   background-color: rgb(180, 201, 179);
+}
+
+.container {
+  background-color: rgb(222, 241, 223);
+  padding: 15px;
+  box-shadow: 0 3px 6px rgba(0, 0, 0, 0.16), 0 3px 6px rgba(0, 0, 0, 0.23);
 }

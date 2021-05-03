@@ -1,5 +1,46 @@
 .list {
   margin: 0 auto;
-  padding: 15px;
-  list-style: none;
+  padding: 0;
+}
+
+.contact {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  box-shadow: 0 3px 6px rgba(0, 0, 0, 0.16), 0 3px 6px rgba(0, 0, 0, 0.23);
+  padding-left: 45px;
+  border-radius: 2px;
+  background-color: rgb(222, 241, 223);
+  padding-top: 10px;
+  padding-bottom: 10px;
+}
+
+.contact:not(:last-child) {
+  margin-bottom: 5px;
+}
+
+.name {
+  display: flex;
+  align-items: center;
+}
+
+.number {
+  display: flex;
+  align-items: center;
+}
+
+.btn {
+  padding: 3px;
+  margin-right: 10px;
+  font-family: Roboto, sans-serif;
+  background-color: transparent;
+  border: 1px solid rgb(180, 201, 179);;
+  border-radius: 5px;
+  transition: background-color 250ms ease;
+  cursor: pointer;
+}
+
+.btn:hover,
+.btn:focus {
+  background-color: rgb(180, 201, 179);;
 }
